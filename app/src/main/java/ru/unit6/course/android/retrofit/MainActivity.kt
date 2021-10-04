@@ -6,6 +6,7 @@ import retrofit2.Retrofit
 import ru.unit6.course.android.retrofit.data.model.User
 import ru.unit6.course.android.retrofit.ui.main.MainFragment
 import ru.unit6.course.android.retrofit.data.api.ApiService
+import ru.unit6.course.android.retrofit.data.database.AppDatabase
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,5 +18,6 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, MainFragment.newInstance())
                 .commitNow()
         }
+        AppDatabase.invoke(applicationContext)
     }
 }

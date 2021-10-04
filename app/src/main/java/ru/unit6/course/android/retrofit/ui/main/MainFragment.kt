@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import okhttp3.*
 import ru.unit6.course.android.retrofit.R
 import ru.unit6.course.android.retrofit.data.model.User
+import ru.unit6.course.android.retrofit.data.model.UserDB
 import ru.unit6.course.android.retrofit.utils.Status
 
 class MainFragment : Fragment() {
@@ -72,7 +73,19 @@ class MainFragment : Fragment() {
                 Status.SUCCESS -> {
                     recyclerView.visibility = View.VISIBLE
                     progressBar.visibility = View.GONE
-                    resource.data?.let { users -> adapter.addUsers(users) }
+                    resource.data?.let { users ->
+                        adapter.addUsers(users)
+                        viewModel.setAllUsersToDatabase(
+                            users = users.map { user ->
+                                UserDB(
+                                    id = user.id,
+                                    name = user.name,
+                                    avatar = user.avatar,
+                                    species = user.species,
+                                )
+                            }
+                        )
+                    }
                     println("######### Observers SUCCESS")
                 }
                 Status.ERROR -> {
@@ -87,6 +100,9 @@ class MainFragment : Fragment() {
                     println("######### Observers LOADING")
                 }
             }
+        }
+        viewModel.localUsers.observe(viewLifecycleOwner) {
+            it
         }
     }
 }
